@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign up · HackMate</title>
+<meta name="description" content="HackMate: find teammates, discover projects and build your next hackathon team with students from your campus.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235A3DF5'/%3E%3Ccircle cx='10' cy='10' r='3' fill='white'/%3E%3Ccircle cx='22' cy='12' r='3' fill='white'/%3E%3Ccircle cx='14' cy='23' r='3' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/auth.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-root="../" data-page="signup">
+<div id="app-nav"></div>
+<div class="auth-wrap"><aside class="auth-side"><h2>Hackathons are better with the right team.</h2><p>Share your skills, find students who fill the gaps, and go from idea to demo together.</p><div class="auth-quote">Find a designer, a backend dev and a researcher without leaving your campus.</div></aside><main class="auth-main"><div class="auth-card card"><h1>Create your profile</h1><p class="muted">Free for students. Takes about a minute.</p>
+<form id="signupForm" novalidate><div class="form-error hidden" role="alert"></div>
+<div class="field"><label for="name">Full name</label><input class="input" id="name" name="name" autocomplete="name" maxlength="100"><div class="field-error"></div></div>
+<div class="field"><label for="email">College email</label><input class="input" id="email" name="email" type="email" autocomplete="email"><div class="field-error"></div></div>
+<div class="form-grid"><div class="field"><label for="password">Password</label><input class="input" id="password" name="password" type="password" autocomplete="new-password"><div class="pw-meter" id="pwMeter" data-score="0"><i></i><i></i><i></i><i></i></div><div class="field-error"></div></div>
+<div class="field"><label for="confirm_password">Confirm password</label><input class="input" id="confirm_password" name="confirm_password" type="password" autocomplete="new-password"><div class="field-error"></div></div></div>
+<div class="field"><label for="campus_id">Campus</label><select class="select" id="campus_id" name="campus_id"></select><div class="field-error"></div></div>
+<div class="form-grid"><div class="field"><label for="branch">Branch</label><input class="input" id="branch" name="branch" list="branches" placeholder="e.g. Computer Science" maxlength="100"><datalist id="branches"><option value="Computer Science"><option value="Information Technology"><option value="Electronics & Communication"><option value="Mechanical"><option value="Mathematics & Computing"></datalist><div class="field-error"></div></div>
+<div class="field"><label for="year">Year</label><select class="select" id="year" name="year"></select><div class="field-error"></div></div></div>
+<button class="btn btn-primary btn-lg" style="width:100%" type="submit">Create account</button></form>
+<p class="small muted" style="margin:18px 0 0;text-align:center">Already a member? <a href="login.html">Log in</a></p></div></main></div>
+<div class="toast-stack" id="toasts" aria-live="polite"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+/* Projects */
+.team-meter{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--muted)}
+.team-meter .progress{flex:1}
+.project h3{margin-bottom:4px}
+.project .desc{color:var(--muted);font-size:.92rem;margin:0 0 12px}
+.cat-tag{font-size:.8rem;color:var(--muted)}
+.detail-block{margin-bottom:16px}

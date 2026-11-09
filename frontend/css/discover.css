@@ -1,0 +1,6 @@
+/* Discover */
+.person{gap:14px}
+.person-top{display:flex;gap:14px;align-items:center}
+.person h3{margin:0}
+.person .bio{color:var(--muted);font-size:.92rem;margin:0}
+.looking{display:flex;gap:8px;align-items:center;font-size:.85rem;color:var(--muted)}

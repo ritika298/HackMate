@@ -1,0 +1,31 @@
+# Local secrets and configuration
+backend/config/config.local.php
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Dependencies
+node_modules/
+vendor/
+__pycache__/
+*.pyc
+
+# Editors
+.vscode/
+.idea/
+
+# Private handoff documents
+docs/HANDOFF_ACCOUNT_1.md
+docs/HANDOFF_ACCOUNT_2.md

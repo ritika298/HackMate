@@ -1,0 +1,11 @@
+/* Hackathons */
+.hack{position:relative;overflow:hidden}
+.hack::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--brand),var(--teal))}
+.hack.online::before{background:linear-gradient(90deg,var(--teal),#6AD6D0)}
+.hack.offline::before{background:linear-gradient(90deg,var(--sun),#FFD27A)}
+.hack h3{margin:6px 0 2px}
+.deadline{font-size:.85rem;font-weight:600}
+.deadline.soon{color:#B0561A}
+.deadline.closed{color:var(--rose)}
+.save-btn[aria-pressed="true"]{background:var(--brand-soft);color:var(--brand-ink);border-color:#CFC6FF}
+.save-btn[aria-pressed="true"] .icon{fill:currentColor}

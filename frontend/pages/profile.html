@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Profile · HackMate</title>
+
+  <meta
+    name="description"
+    content="HackMate: find teammates, discover projects and build your next hackathon team with students from your campus."
+  >
+
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235A3DF5'/%3E%3Ccircle cx='10' cy='10' r='3' fill='white'/%3E%3Ccircle cx='22' cy='12' r='3' fill='white'/%3E%3Ccircle cx='14' cy='23' r='3' fill='white'/%3E%3C/svg%3E"
+  >
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/profile.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+
+<body data-root="../" data-page="profile">
+
+  <div id="app-nav"></div>
+
+  <main class="container page">
+    <div id="profile"></div>
+  </main>
+
+  <div id="app-footer"></div>
+
+  <!-- EDIT PROFILE MODAL -->
+  <div
+    class="modal"
+    id="editModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="editModal-t"
+  >
+    <div class="modal-box wide">
+
+      <div class="modal-head">
+        <h3 id="editModal-t">Edit profile</h3>
+
+        <button
+          type="button"
+          class="modal-x"
+          data-close
+          aria-label="Close"
+        >
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M6 6l12 12M18 6 6 18"/>
+          </svg>
+        </button>
+      </div>
+
+      <form id="editForm" novalidate>
+
+        <!-- BASIC INFORMATION -->
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="e-name">Name</label>
+            <input
+              class="input"
+              id="e-name"
+              name="name"
+              maxlength="100"
+            >
+            <div class="field-error"></div>
+          </div>
+
+          <div class="field">
+            <label for="e-branch">Branch</label>
+            <input
+              class="input"
+              id="e-branch"
+              name="branch"
+              maxlength="100"
+            >
+            <div class="field-error"></div>
+          </div>
+
+          <div class="field">
+            <label for="e-year">Year</label>
+            <select class="select" id="e-year" name="year">
+              <option value="1">Year 1</option>
+              <option value="2">Year 2</option>
+              <option value="3">Year 3</option>
+              <option value="4">Year 4</option>
+              <option value="5">Year 5</option>
+            </select>
+            <div class="field-error"></div>
+          </div>
+
+          <div class="field">
+            <label for="e-level">Experience level</label>
+            <select
+              class="select"
+              id="e-level"
+              name="experience_level"
+            >
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- BIO -->
+        <div class="field">
+          <label for="e-bio">Bio</label>
+          <textarea
+            class="textarea"
+            id="e-bio"
+            name="bio"
+            maxlength="500"
+            placeholder="Tell people about yourself..."
+          ></textarea>
+          <div class="field-error"></div>
+        </div>
+
+        <!-- SKILLS -->
+        <div class="field">
+
+          <label for="skillSearch">Skills</label>
+
+          <input
+            class="input"
+            id="skillSearch"
+            type="search"
+            placeholder="Search skills..."
+            autocomplete="off"
+          >
+
+          <div style="margin-top: 10px;">
+            <label for="skillCategoryFilter">Filter by category</label>
+
+            <select
+              class="select"
+              id="skillCategoryFilter"
+            >
+              <option value="all">All categories</option>
+              <option value="language">Programming Languages</option>
+              <option value="frontend">Frontend Development</option>
+              <option value="backend">Backend Development</option>
+              <option value="data_ai">Data Science & AI</option>
+              <option value="mobile">Mobile Development</option>
+              <option value="design">UI/UX & Design</option>
+              <option value="devops">DevOps & Cloud</option>
+              <option value="other">Other Skills</option>
+            </select>
+          </div>
+
+          <div
+            class="field-hint"
+            id="skillCount"
+            aria-live="polite"
+          >
+            0 selected · Maximum 15
+          </div>
+
+          <input
+            class="input chip-value-input"
+            id="e-skills"
+            name="skills"
+            aria-label="Selected skills"
+            readonly
+          >
+
+          <div
+            id="skillChoices"
+            class="choice-bubbles"
+            aria-label="Available skills"
+          ></div>
+
+          <div class="field-hint">
+            Select up to 15 skills. Search or filter to find more.
+          </div>
+
+        </div>
+
+        <!-- INTERESTS -->
+        <div class="field">
+
+          <label for="interestSearch">Interests</label>
+
+          <input
+            class="input"
+            id="interestSearch"
+            type="search"
+            placeholder="Search interests..."
+            autocomplete="off"
+          >
+
+          <div
+            class="field-hint"
+            id="interestCount"
+            aria-live="polite"
+          >
+            0 selected · Maximum 10
+          </div>
+
+          <input
+            class="input chip-value-input"
+            id="e-int"
+            name="interests"
+            aria-label="Selected interests"
+            readonly
+          >
+
+          <div
+            id="interestChoices"
+            class="choice-bubbles"
+            aria-label="Available interests"
+          ></div>
+
+          <div class="field-hint">
+            Choose up to 10 topics that interest you.
+          </div>
+
+        </div>
+
+        <!-- PREFERRED ROLES -->
+        <div class="field">
+
+          <label for="roleSearch">Preferred roles</label>
+
+          <input
+            class="input"
+            id="roleSearch"
+            type="search"
+            placeholder="Search preferred roles..."
+            autocomplete="off"
+          >
+
+          <div
+            class="field-hint"
+            id="roleCount"
+            aria-live="polite"
+          >
+            0 selected
+          </div>
+
+          <input
+            class="input chip-value-input"
+            id="e-roles"
+            name="preferred_roles"
+            aria-label="Selected preferred roles"
+            readonly
+          >
+
+          <div
+            id="roleChoices"
+            class="choice-bubbles"
+            aria-label="Available preferred roles"
+          ></div>
+
+          <div class="field-hint">
+            Select the types of roles you would like to take on in a team.
+          </div>
+
+        </div>
+
+        <!-- EXPERIENCE -->
+<div class="field">
+  <label for="e-exp">Experience & Projects</label>
+
+  <textarea
+    class="textarea"
+    id="e-exp"
+    name="experience_text"
+    maxlength="500"
+    rows="3"
+    placeholder="Tell us about your hackathons, internships, projects, or achievements..."
+  ></textarea>
+
+  <div class="field-hint">
+    Share your projects, hackathon experience, internships, or achievements.
+    Maximum 500 characters.
+  </div>
+</div>
+
+
+        <!-- SOCIAL LINKS -->
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="e-gh">GitHub</label>
+
+            <input
+              class="input"
+              id="e-gh"
+              name="github_url"
+              type="url"
+              placeholder="https://github.com/you"
+            >
+
+            <div class="field-error"></div>
+          </div>
+
+          <div class="field">
+            <label for="e-li">LinkedIn</label>
+
+            <input
+              class="input"
+              id="e-li"
+              name="linkedin_url"
+              type="url"
+              placeholder="https://linkedin.com/in/you"
+            >
+
+            <div class="field-error"></div>
+          </div>
+
+        </div>
+
+        <!-- TEAM PREFERENCE -->
+        <label class="check" style="margin-bottom: 14px;">
+          <input
+            type="checkbox"
+            name="looking_for_team"
+          >
+          I am looking for a team
+        </label>
+
+        <!-- FORM ACTIONS -->
+        <div class="modal-foot">
+
+          <button
+            type="button"
+            class="btn btn-ghost"
+            data-close
+          >
+            Cancel
+          </button>
+
+          <button
+            class="btn btn-primary"
+            type="submit"
+          >
+            Save changes
+          </button>
+
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS -->
+  <div
+    class="toast-stack"
+    id="toasts"
+    aria-live="polite"
+  ></div>
+
+  <!-- JAVASCRIPT -->
+  <script src="../js/utils.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/profile.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,7 @@
+# No avatar upload exists yet. If one is added: never execute scripts from this folder.
+Options -Indexes -ExecCGI
+<FilesMatch "\.(php|phtml|phar|php[0-9])$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+</FilesMatch>

@@ -1,0 +1,14 @@
+/* Team + Requests + Admin */
+.team-hero{background:linear-gradient(120deg,#2B1B9E,#5A3DF5);color:#fff;border-radius:var(--r-card);padding:28px;margin-bottom:22px}
+.team-hero p{color:#DDD6FF;margin:0}
+.team-hero h2{margin-bottom:6px}
+.member{align-items:center;text-align:center;gap:10px}
+.member .avatar{width:72px;height:72px;font-size:1.5rem}
+.member .role{font-weight:600;color:var(--brand-ink)}
+.req-card{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:start}
+.req-msg{background:var(--bg);border-radius:12px;padding:10px 14px;font-size:.92rem;margin:10px 0}
+.req-actions{display:flex;gap:8px;flex-wrap:wrap}
+.admin-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:22px}
+.admin-stats b{font:800 1.7rem var(--display);display:block}
+.notice{background:var(--sun-soft);border:1px solid #F2D79B;border-radius:12px;padding:10px 14px;font-size:.88rem;margin-bottom:18px;color:#6A4300}
+@media (max-width:860px){.req-card{grid-template-columns:auto 1fr}.req-actions{grid-column:1/-1}.admin-stats{grid-template-columns:repeat(2,1fr)}}

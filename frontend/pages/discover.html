@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Discover · HackMate</title>
+<meta name="description" content="HackMate: find teammates, discover projects and build your next hackathon team with students from your campus.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235A3DF5'/%3E%3Ccircle cx='10' cy='10' r='3' fill='white'/%3E%3Ccircle cx='22' cy='12' r='3' fill='white'/%3E%3Ccircle cx='14' cy='23' r='3' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/discover.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-root="../" data-page="discover">
+<div id="app-nav"></div>
+<main class="container page">
+<div class="page-head"><div><h1>Find Your Team</h1><p>Students on HackMate who are open to teaming up. <span id="count"></span></p></div></div><form class="filters" id="filters" role="search" novalidate>
+  <div class="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input class="input" type="search" name="q" placeholder="Search by name, skill or bio" aria-label="Search"></div>
+  <select class="select" name="campus" aria-label="Campus"></select><select class="select" name="skill" aria-label="Skill"></select><select class="select" name="role" aria-label="Role"></select><select class="select" name="branch" aria-label="Branch"><option value="">Any branch</option><option value="Computer">Computer Science / Engineering</option><option value="Information Technology">Information Technology</option><option value="Electronics">Electronics</option><option value="Mathematics">Mathematics &amp; Computing</option><option value="Software">Software Engineering</option></select><select class="select" name="year" aria-label="Year"></select>
+</form><div class="grid-cards" id="results" aria-live="polite"></div>
+</main>
+<div id="app-footer"></div>
+<div class="toast-stack" id="toasts" aria-live="polite"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/components.js"></script>
+<script src="../js/discover.js"></script>
+</body>
+</html>
