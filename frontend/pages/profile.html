@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,34 +6,263 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Profile · HackMate</title>
 <meta name="description" content="HackMate: find teammates, discover projects and build your next hackathon team with students from your campus.">
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235A3DF5'/%3E%3Ccircle cx='10' cy='10' r='3' fill='white'/%3E%3Ccircle cx='22' cy='12' r='3' fill='white'/%3E%3Ccircle cx='14' cy='23' r='3' fill='white'/%3E%3C/svg%3E">
+
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/profile.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
+
 <body data-root="../" data-page="profile">
+
 <div id="app-nav"></div>
+
 <main class="container page">
-<div id="profile"></div>
+  <div id="profile"></div>
 </main>
-<div id="app-footer"></div><div class="modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editModal-t"><div class="modal-box wide"><div class="modal-head"><h3 id="editModal-t">Edit profile</h3><button class="modal-x" data-close aria-label="Close"><svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><form id="editForm" novalidate>
-<div class="form-grid"><div class="field"><label for="e-campus">College / campus</label><select class="select" id="e-campus" name="campus_id" required><option value="">Loading colleges…</option></select><div class="field-error"></div></div><div class="field"><label for="e-name">Name</label><input class="input" id="e-name" name="name" maxlength="100"><div class="field-error"></div></div>
-<div class="field"><label for="e-branch">Branch</label><input class="input" id="e-branch" name="branch" maxlength="100"><div class="field-error"></div></div>
-<div class="field"><label for="e-year">Year</label><select class="select" id="e-year" name="year"><option value="1">Year 1</option><option value="2">Year 2</option><option value="3">Year 3</option><option value="4">Year 4</option><option value="5">Year 5</option></select><div class="field-error"></div></div>
-<div class="field"><label for="e-level">Experience level</label><select class="select" id="e-level" name="experience_level"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></div></div>
-<div class="field"><label for="e-bio">Bio</label><textarea class="textarea" id="e-bio" name="bio" maxlength="500"></textarea><div class="field-error"></div></div>
-<div class="field"><label for="e-skills">Skills</label><input class="input" id="e-skills" name="skills" placeholder="Python, React, Figma"><div class="field-hint">Separate with commas.</div></div>
-<div class="field"><label for="e-int">Interests</label><input class="input" id="e-int" name="interests" placeholder="AI, Web3, Climate tech"></div>
-<div class="field"><label for="e-roles">Preferred roles</label><input class="input" id="e-roles" name="preferred_roles" placeholder="Frontend Developer, ML Engineer"></div>
-<div class="field"><label for="e-exp">Experience</label><input class="input" id="e-exp" name="experience_text" maxlength="500" placeholder="Hackathons, internships, projects"></div>
-<div class="form-grid"><div class="field"><label for="e-gh">GitHub</label><input class="input" id="e-gh" name="github_url" type="url" placeholder="https://github.com/you"><div class="field-error"></div></div>
-<div class="field"><label for="e-li">LinkedIn</label><input class="input" id="e-li" name="linkedin_url" type="url" placeholder="https://linkedin.com/in/you"><div class="field-error"></div></div></div>
-<label class="check" style="margin-bottom:14px"><input type="checkbox" name="looking_for_team"> I am looking for a team</label>
-<div class="modal-foot"><button type="button" class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" type="submit">Save changes</button></div></form></div></div>
+
+<div id="app-footer"></div>
+
+<div class="modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editModal-t">
+  <div class="modal-box wide">
+
+    <div class="modal-head">
+      <h3 id="editModal-t">Edit profile</h3>
+
+      <button class="modal-x" data-close aria-label="Close">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M6 6l12 12M18 6 6 18"/>
+        </svg>
+      </button>
+    </div>
+
+    <form id="editForm" novalidate>
+
+      <!-- BASIC DETAILS -->
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="e-campus">College / campus</label>
+          <select class="select" id="e-campus" name="campus_id" required>
+            <option value="">Loading colleges…</option>
+          </select>
+          <div class="field-error"></div>
+        </div>
+
+        <div class="field">
+          <label for="e-name">Name</label>
+          <input class="input" id="e-name" name="name" maxlength="100">
+          <div class="field-error"></div>
+        </div>
+
+        <div class="field">
+          <label for="e-branch">Branch</label>
+          <input class="input" id="e-branch" name="branch" maxlength="100">
+          <div class="field-error"></div>
+        </div>
+
+        <div class="field">
+          <label for="e-year">Year</label>
+          <select class="select" id="e-year" name="year">
+            <option value="1">Year 1</option>
+            <option value="2">Year 2</option>
+            <option value="3">Year 3</option>
+            <option value="4">Year 4</option>
+            <option value="5">Year 5</option>
+          </select>
+          <div class="field-error"></div>
+        </div>
+
+      </div>
+
+      <!-- BIO -->
+
+      <div class="field">
+        <label for="e-bio">Bio</label>
+        <textarea
+          class="textarea"
+          id="e-bio"
+          name="bio"
+          maxlength="500"
+          placeholder="Tell people a little about yourself..."
+        ></textarea>
+        <div class="field-error"></div>
+      </div>
+
+      <!-- SKILLS -->
+
+      <div class="field bubble-field">
+        <label>Skills</label>
+
+        <div class="bubble-picker" id="skillPicker">
+
+          <div class="selected-bubble-section">
+            <div class="bubble-section-label">Your selected skills</div>
+            <div class="selected-bubbles" id="skillSelected">
+              <span class="bubble-empty">No skills selected yet.</span>
+            </div>
+          </div>
+
+          <div class="bubble-suggestions-section">
+            <div class="bubble-section-label">Choose your skills</div>
+            <div class="bubble-options" id="skillOptions">
+              <p class="muted">Loading skills...</p>
+            </div>
+          </div>
+
+          <div class="custom-bubble-input">
+            <input class="input" type="text" id="customSkill"
+              placeholder="Add your own skill..." maxlength="60">
+            <button type="button" class="btn btn-ghost" id="addCustomSkill">
+              + Add
+            </button>
+          </div>
+
+        </div>
+
+        <input type="hidden" id="e-skills" name="skills" value="">
+        <div class="field-hint">Select multiple skills or add your own.</div>
+        <div class="field-error"></div>
+      </div>
+
+      <!-- INTERESTS -->
+
+      <div class="field bubble-field">
+        <label>Interests</label>
+
+        <div class="bubble-picker" id="interestPicker">
+
+          <div class="selected-bubble-section">
+            <div class="bubble-section-label">Your selected interests</div>
+            <div class="selected-bubbles" id="interestSelected">
+              <span class="bubble-empty">No interests selected yet.</span>
+            </div>
+          </div>
+
+          <div class="bubble-suggestions-section">
+            <div class="bubble-section-label">Explore interests</div>
+            <div class="bubble-options" id="interestOptions">
+              <p class="muted">Loading interests...</p>
+            </div>
+          </div>
+
+          <div class="custom-bubble-input">
+            <input class="input" type="text" id="customInterest"
+              placeholder="Add your own interest..." maxlength="40">
+            <button type="button" class="btn btn-ghost" id="addCustomInterest">
+              + Add
+            </button>
+          </div>
+
+        </div>
+
+        <input type="hidden" id="e-int" name="interests" value="">
+        <div class="field-hint">Choose multiple interests or add your own.</div>
+        <div class="field-error"></div>
+      </div>
+
+      <!-- PREFERRED ROLES -->
+
+      <div class="field bubble-field">
+        <label>Preferred roles</label>
+
+        <div class="bubble-picker" id="rolePicker">
+
+          <div class="selected-bubble-section">
+            <div class="bubble-section-label">Your selected roles</div>
+            <div class="selected-bubbles" id="roleSelected">
+              <span class="bubble-empty">No roles selected yet.</span>
+            </div>
+          </div>
+
+          <div class="bubble-suggestions-section">
+            <div class="bubble-section-label">Choose your preferred roles</div>
+            <div class="bubble-options" id="roleOptions">
+              <p class="muted">Loading roles...</p>
+            </div>
+          </div>
+
+          <div class="custom-bubble-input">
+            <input class="input" type="text" id="customRole"
+              placeholder="Add your own preferred role..." maxlength="40">
+            <button type="button" class="btn btn-ghost" id="addCustomRole">
+              + Add
+            </button>
+          </div>
+
+        </div>
+
+        <input type="hidden" id="e-roles" name="preferred_roles" value="">
+        <div class="field-hint">Choose multiple roles or add your own.</div>
+        <div class="field-error"></div>
+      </div>
+
+      <!-- EXPERIENCE -->
+
+      <div class="field">
+        <label for="e-exp">Experience</label>
+        <textarea
+          class="textarea"
+          id="e-exp"
+          name="experience_text"
+          maxlength="500"
+          placeholder="Tell us about your projects, hackathons, internships, technical experience or achievements..."
+        ></textarea>
+        <div class="field-hint">
+          Describe your real experience, projects and achievements in your own words.
+        </div>
+      </div>
+
+      <!-- SOCIAL LINKS -->
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="e-gh">GitHub</label>
+          <input class="input" id="e-gh" name="github_url"
+            type="url" placeholder="https://github.com/you">
+          <div class="field-error"></div>
+        </div>
+
+        <div class="field">
+          <label for="e-li">LinkedIn</label>
+          <input class="input" id="e-li" name="linkedin_url"
+            type="url" placeholder="https://linkedin.com/in/you">
+          <div class="field-error"></div>
+        </div>
+
+      </div>
+
+      <!-- TEAM STATUS -->
+
+      <label class="check" style="margin-bottom:14px">
+        <input type="checkbox" name="looking_for_team">
+        I am looking for a team
+      </label>
+
+      <!-- ACTIONS -->
+
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" data-close>
+          Cancel
+        </button>
+        <button class="btn btn-primary" type="submit">
+          Save changes
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
 <div class="toast-stack" id="toasts" aria-live="polite"></div>
+
 <script src="../js/utils.js"></script>
 <script src="../js/api.js"></script>
 <script src="../js/components.js"></script>
 <script src="../js/profile.js"></script>
+
 </body>
 </html>

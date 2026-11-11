@@ -1,36 +1,315 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Projects · HackMate</title>
-<meta name="description" content="HackMate: find teammates, discover projects and build your next hackathon team with students from your campus.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235A3DF5'/%3E%3Ccircle cx='10' cy='10' r='3' fill='white'/%3E%3Ccircle cx='22' cy='12' r='3' fill='white'/%3E%3Ccircle cx='14' cy='23' r='3' fill='white'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../css/main.css">
-<link rel="stylesheet" href="../css/projects.css">
-<link rel="stylesheet" href="../css/responsive.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Projects · HackMate</title>
+
+  <meta name="description" content="HackMate: find teammates, discover projects and build your next hackathon team with students from your campus.">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235A3DF5'/%3E%3Ccircle cx='10' cy='10' r='3' fill='white'/%3E%3Ccircle cx='22' cy='12' r='3' fill='white'/%3E%3Ccircle cx='14' cy='23' r='3' fill='white'/%3E%3C/svg%3E">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/projects.css">
+  <link rel="stylesheet" href="../css/responsive.css">
 </head>
+
 <body data-root="../" data-page="projects">
-<div id="app-nav"></div>
-<main class="container page">
-<div class="page-head"><div><h1>Projects</h1><p>Join a team that needs your skills, or start your own.</p></div><button class="btn btn-primary" id="createBtn"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Create project</button></div><form class="filters" id="filters" role="search" novalidate>
-  <div class="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input class="input" type="search" name="q" placeholder="Search projects" aria-label="Search"></div>
-  <select class="select" name="campus" aria-label="Campus"></select><select class="select" name="skill" aria-label="Tech"></select><select class="select" name="category" aria-label="Type"></select><select class="select" name="status" aria-label="Status"><option value="">Any status</option><option value="open">Open</option><option value="in_progress">In progress</option></select>
-</form><div class="grid-cards" id="results" aria-live="polite"></div>
-</main>
-<div id="app-footer"></div><div class="modal" id="createModal" role="dialog" aria-modal="true" aria-labelledby="createModal-t"><div class="modal-box wide"><div class="modal-head"><h3 id="createModal-t">Create a project</h3><button class="modal-x" data-close aria-label="Close"><svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><form id="createForm" novalidate>
-<div class="field"><label for="c-title">Project title</label><input class="input" id="c-title" name="title" maxlength="150"><div class="field-error"></div></div>
-<div class="field"><label for="c-desc">What are you building?</label><textarea class="textarea" id="c-desc" name="description" maxlength="2000"></textarea><div class="field-error"></div></div>
-<div class="form-grid"><div class="field"><label for="c-cat">Type</label><select class="select" id="c-cat" name="category"></select></div>
-<div class="field"><label for="c-campus">Campus</label><select class="select" id="c-campus" name="campus_id"></select></div>
-<div class="field"><label for="c-size">Team size</label><select class="select" id="c-size" name="team_size"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select><div class="field-error"></div></div></div>
-<div class="field"><label for="c-roles">Roles you need</label><input class="input" id="c-roles" name="looking_for" placeholder="ML Engineer, Frontend Developer"><div class="field-hint">Separate with commas.</div><div class="field-error"></div></div>
-<div class="field"><label for="c-tech">Tech stack</label><input class="input" id="c-tech" name="tech" placeholder="Python, React, FastAPI"></div>
-<div class="modal-foot"><button type="button" class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" type="submit">Create project</button></div></form></div></div><div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailModal-t"><div class="modal-box "><div class="modal-head"><h3 id="detailModal-t"><span id="detailTitle"></span></h3><button class="modal-x" data-close aria-label="Close"><svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div id="detailBody"></div></div></div>
-<div class="toast-stack" id="toasts" aria-live="polite"></div>
-<script src="../js/utils.js"></script>
-<script src="../js/api.js"></script>
-<script src="../js/components.js"></script>
-<script src="../js/projects.js"></script>
+
+  <div id="app-nav"></div>
+
+  <main class="container page">
+
+    <div class="page-head">
+      <div>
+        <h1>Projects</h1>
+        <p>Join a team that needs your skills, or start your own.</p>
+      </div>
+
+      <button class="btn btn-primary" id="createBtn">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        Create project
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <form class="filters" id="filters" role="search" novalidate>
+
+      <div class="search">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m20 20-3.5-3.5"/>
+        </svg>
+
+        <input
+          class="input"
+          type="search"
+          name="q"
+          placeholder="Search projects"
+          aria-label="Search"
+        >
+      </div>
+
+      <select class="select" name="campus" aria-label="Campus"></select>
+      <select class="select" name="skill" aria-label="Tech"></select>
+      <select class="select" name="category" aria-label="Type"></select>
+
+      <select class="select" name="status" aria-label="Status">
+        <option value="">Any status</option>
+        <option value="open">Open</option>
+        <option value="in_progress">In progress</option>
+      </select>
+
+    </form>
+
+    <div class="grid-cards" id="results" aria-live="polite"></div>
+
+  </main>
+
+  <div id="app-footer"></div>
+
+  <!-- CREATE PROJECT MODAL -->
+  <div
+    class="modal"
+    id="createModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="createModal-t"
+  >
+
+    <div class="modal-box wide">
+
+      <div class="modal-head">
+        <h3 id="createModal-t">Create a project</h3>
+
+        <button class="modal-x" data-close aria-label="Close">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M6 6l12 12M18 6 6 18"/>
+          </svg>
+        </button>
+      </div>
+
+      <form id="createForm" novalidate>
+
+        <!-- Project title -->
+        <div class="field">
+          <label for="c-title">Project title</label>
+
+          <input
+            class="input"
+            id="c-title"
+            name="title"
+            maxlength="150"
+          >
+
+          <div class="field-error"></div>
+        </div>
+
+        <!-- Description -->
+        <div class="field">
+          <label for="c-desc">What are you building?</label>
+
+          <textarea
+            class="textarea"
+            id="c-desc"
+            name="description"
+            maxlength="2000"
+          ></textarea>
+
+          <div class="field-error"></div>
+        </div>
+
+        <!-- Project details -->
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="c-cat">Type</label>
+            <select class="select" id="c-cat" name="category"></select>
+          </div>
+
+          <div class="field">
+            <label for="c-campus">Campus</label>
+            <select class="select" id="c-campus" name="campus_id"></select>
+          </div>
+
+          <div class="field">
+            <label for="c-size">Team size</label>
+
+            <select class="select" id="c-size" name="team_size">
+              <option>2</option>
+              <option>3</option>
+              <option selected>4</option>
+              <option>5</option>
+              <option>6</option>
+            </select>
+
+            <div class="field-error"></div>
+          </div>
+
+        </div>
+
+        <!-- ROLES BUBBLE PICKER -->
+        <div class="field project-bubble-field">
+
+          <label>Roles you need</label>
+
+          <div class="selected-bubble-section">
+            <div class="bubble-section-label">Selected roles</div>
+
+            <div class="selected-bubbles" id="createLookSelected">
+              <span class="bubble-empty">Nothing selected yet.</span>
+            </div>
+          </div>
+
+          <div class="bubble-section-label">Suggestions</div>
+
+          <div class="bubble-options" id="createLookOptions"></div>
+
+          <div class="custom-bubble-row">
+            <input
+              class="input"
+              id="createLookCustom"
+              type="text"
+              maxlength="60"
+              placeholder="Add your own role..."
+            >
+
+            <button
+              type="button"
+              class="btn btn-ghost"
+              id="createLookAdd"
+            >
+              Add
+            </button>
+          </div>
+
+          <div class="field-hint">
+            Choose one or more roles, or add your own.
+          </div>
+
+          <div class="field-error"></div>
+
+          <input
+            type="hidden"
+            id="c-roles"
+            name="looking_for"
+          >
+
+        </div>
+
+        <!-- TECH STACK BUBBLE PICKER -->
+        <div class="field project-bubble-field">
+
+          <label>Tech stack</label>
+
+          <div class="selected-bubble-section">
+            <div class="bubble-section-label">Selected technologies</div>
+
+            <div class="selected-bubbles" id="createTechSelected">
+              <span class="bubble-empty">Nothing selected yet.</span>
+            </div>
+          </div>
+
+          <div class="bubble-section-label">Suggestions</div>
+
+          <div class="bubble-options" id="createTechOptions"></div>
+
+          <div class="custom-bubble-row">
+            <input
+              class="input"
+              id="createTechCustom"
+              type="text"
+              maxlength="60"
+              placeholder="Add your own technology..."
+            >
+
+            <button
+              type="button"
+              class="btn btn-ghost"
+              id="createTechAdd"
+            >
+              Add
+            </button>
+          </div>
+
+          <div class="field-hint">
+            Choose technologies or add your own.
+          </div>
+
+          <input
+            type="hidden"
+            id="c-tech"
+            name="tech"
+          >
+
+        </div>
+
+        <!-- Modal buttons -->
+        <div class="modal-foot">
+
+          <button
+            type="button"
+            class="btn btn-ghost"
+            data-close
+          >
+            Cancel
+          </button>
+
+          <button
+            class="btn btn-primary"
+            type="submit"
+          >
+            Create project
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- PROJECT DETAIL MODAL -->
+  <div
+    class="modal"
+    id="detailModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="detailModal-t"
+  >
+
+    <div class="modal-box">
+
+      <div class="modal-head">
+
+        <h3 id="detailModal-t">
+          <span id="detailTitle"></span>
+        </h3>
+
+        <button class="modal-x" data-close aria-label="Close">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M6 6l12 12M18 6 6 18"/>
+          </svg>
+        </button>
+
+      </div>
+
+      <div id="detailBody"></div>
+
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toasts" aria-live="polite"></div>
+
+  <!-- JavaScript -->
+  <script src="../js/utils.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/projects.js"></script>
+
 </body>
 </html>

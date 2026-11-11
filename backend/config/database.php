@@ -27,7 +27,11 @@ function hm_config(): array
     ];
 
     $local = __DIR__ . '/config.local.php';
-    $override = is_file($local) ? require $local : [];
+    $production = __DIR__ . '/config.production.php';
+
+    $configFile = ($local && is_file($local)) ? $local : $production;
+
+    $override = is_file($configFile) ? require $configFile : [];
 
     $cfg = array_merge(
         $defaults,
