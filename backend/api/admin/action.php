@@ -1,6 +1,6 @@
 <?php
 /* POST /admin/action.php {entity, id?, action, …} — ADMIN only (role re-checked in the database on every call).
- *   user      : suspend | activate                 (cannot suspend yourself or another admin)
+ *   user      : suspend | activate | set_campus(+campus_id)                 (cannot suspend yourself or another admin)
  *   project   : close | reopen | delete
  *   hackathon : feature | unfeature | archive | publish | delete | create(+fields)
  *   report    : review | resolve | dismiss
@@ -31,6 +31,19 @@ $affected = function (PDOStatement $st, string $what) {
 switch ($entity) {
     case 'user':
         $needId();
+        if ($action === 'set_campus') {
+            $cv = new V($in);
+            $campusId = $cv->int('campus_id', 1, 2147483647, true, 'College');
+            $cv->done();
+            $campus = $pdo->prepare('SELECT 1 FROM campuses WHERE id = ? AND is_active = 1');
+            $campus->execute([$campusId]);
+            if (!$campus->fetchColumn()) { fail('Please select a valid active college.', 422, 'validation_error', ['campus_id' => 'Select a valid college.']); }
+            $exists = $pdo->prepare('SELECT 1 FROM users WHERE id = ?'); $exists->execute([$id]);
+            if (!$exists->fetchColumn()) { fail('User not found.', 404, 'not_found'); }
+            $pdo->prepare('UPDATE users SET campus_id = ? WHERE id = ?')->execute([$campusId, $id]);
+            $msg = 'User college updated.';
+            break;
+        }
         if (!in_array($action, ['suspend', 'activate'], true)) { $bad(); }
         if ($id === $admin['id']) {
             fail('You cannot change your own account status.', 409, 'forbidden_target');

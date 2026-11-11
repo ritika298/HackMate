@@ -16,8 +16,8 @@
         <div class="stat-grid">
           <div class="card stat-card"><span class="icon-bubble">${HM.icon('user')}</span><b>${e(d.profile_completion)}%</b><span class="muted small">Profile completion</span><div class="progress"><i style="width:${Number(d.profile_completion) || 0}%"></i></div></div>
           ${stat('inbox', d.pending_requests, 'Pending requests', 'requests.html')}
-          ${stat('folder', d.projects_count, 'My projects', 'projects.html?mine=1')}
-          ${stat('bookmark', d.saved_hackathons_count, 'Saved hackathons', 'hackathons.html?saved=1')}
+          ${stat('folder', d.projects_count, 'My projects', 'projects.html')}
+          ${stat('bookmark', d.saved_hackathons_count, 'Saved hackathons', 'hackathons.html')}
           ${stat('users', d.team_members_count, 'Team members', 'team.html')}
         </div>
         <div class="dash-cols"><div class="stack">

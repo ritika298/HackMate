@@ -2,16 +2,7 @@
 (function (HM) {
   'use strict';
   HM.initPage('hackathons');
-  const e = HM.esc;
-const grid = HM.$('#results');
-const form = HM.$('#filters');
-let list = [];
-
-// Automatically activate Saved only when opened from the dashboard.
-const params = new URLSearchParams(window.location.search);
-if (params.get('saved') === '1') {
-  HM.$('#savedOnly').checked = true;
-}
+  const e = HM.esc; const grid = HM.$('#results'), form = HM.$('#filters'); let list = [];
 
   const filters = () => { const f = Object.fromEntries(new FormData(form).entries()); if (!HM.$('#savedOnly').checked) delete f.saved; return f; };
   async function load() {

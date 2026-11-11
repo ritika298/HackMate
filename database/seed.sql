@@ -3,14 +3,12 @@
 -- generates real hashes with PHP password_hash() (see docs/HANDOFF_ACCOUNT_1.md).
 SET NAMES utf8mb4;
 
-
 INSERT INTO campuses (id, name, short_name, slug, city) VALUES
  (1,'Indira Gandhi Delhi Technical University for Women','IGDTUW','igdtuw','Delhi'),
  (2,'Delhi Technological University','DTU','dtu','Delhi'),
  (3,'Netaji Subhas University of Technology','NSUT','nsut','Delhi'),
  (4,'Indian Institute of Technology Delhi','IIT Delhi','iit-delhi','Delhi'),
- (6,'Indraprastha Institute of Information Technology Delhi','IIIT Delhi','iiit-delhi','Delhi');
-
+ (5,'Other','Other','other',NULL);
 
 INSERT INTO skills (id, name, category) VALUES
  (1,'Python','language'),(2,'JavaScript','language'),(3,'Java','language'),(4,'C++','language'),
@@ -21,7 +19,7 @@ INSERT INTO skills (id, name, category) VALUES
  (21,'Blockchain','other'),(22,'IoT','other'),(23,'Research Writing','other'),(24,'Product Management','other'),
  (25,'TensorFlow','data_ai'),(26,'AI/ML','data_ai'),(27,'Data Science','data_ai'),(28,'Cloud','devops'),(29,'DevOps','devops');
 
--- password_hash below is a placeholder, NOT a valid hash.mysql -u root hackmate -e "SHOW TABLES;"
+-- password_hash below is a placeholder, NOT a valid hash.
 INSERT INTO users (id, campus_id, name, email, password_hash, role, status, email_verified_at) VALUES
  (1,2,'Admin HackMate','admin@hackmate.test','!DEMO-NO-LOGIN','admin','active',NOW()),
  (2,2,'Shubham Verma','shubham@hackmate.test','!DEMO-NO-LOGIN','student','active',NOW()),

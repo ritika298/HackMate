@@ -145,7 +145,7 @@ window.HM = window.HM || {};
       : `<a class="btn btn-ghost btn-sm" href="${P('requests.html')}" aria-label="Requests">${HM.icon('bell')}</a>
          <div class="dropdown"><button class="btn btn-ghost btn-sm" id="userBtn" aria-haspopup="true" aria-label="Account menu"><span id="navAvatar">${HM.icon('user')}</span></button>
           <div class="dropdown-menu" role="menu"><div class="dropdown-head"><b id="navName">Your account</b><div class="small muted" id="navCampus"></div></div>
-           <a href="${P('profile.html')}">${HM.icon('user')}My profile</a><a href="${P('admin.html')}">${HM.icon('shield')}Admin</a>
+           <a href="${P('profile.html')}">${HM.icon('user')}My profile</a>
            <button id="logoutBtn">${HM.icon('logout')}Log out</button></div></div>`;
     host.innerHTML = `<header class="nav"><div class="container nav-inner"><a class="logo" href="${R}index.html">${LOGO}</a>
       <nav class="nav-links" aria-label="Main">${links}</nav><div class="nav-actions">${right}</div>
@@ -153,8 +153,13 @@ window.HM = window.HM || {};
     HM.$('#navToggle').addEventListener('click', (e) => { const n = HM.$('.nav'); const o = n.classList.toggle('menu-open'); e.currentTarget.setAttribute('aria-expanded', o); });
     const ub = HM.$('#userBtn'); if (ub) ub.addEventListener('click', (e) => { e.stopPropagation(); ub.parentElement.classList.toggle('open'); });
     const lo = HM.$('#logoutBtn'); if (lo) lo.addEventListener('click', async () => { try { await HM.api.logout(); window.location.href = P('login.html'); } catch (err) { HM.toastError(err); } });
-    if (!landing && HM.api) HM.api.getCurrentUser().then((u) => { // fills the menu; never used for security decisions
+    if (!landing && HM.api) HM.api.getCurrentUser().then((u) => { // fills the menu from the SERVER session (never from browser storage)
       if (!u) return; HM.$('#navAvatar').innerHTML = HM.avatar(u, 'avatar-sm'); HM.$('#navName').textContent = u.name; HM.$('#navCampus').textContent = u.campus || '';
+      // The Admin option is only ever added to the page for a confirmed admin; students never get it in the DOM. Cosmetic only:
+      // every /admin/* endpoint still enforces role = 'admin' on the server.
+      if (u.role === 'admin' && !HM.$('[data-admin-link]')) {
+        HM.$('#logoutBtn').insertAdjacentHTML('beforebegin', `<a href="${P('admin.html')}" data-admin-link ${active === 'admin' ? 'aria-current="page"' : ''}>${HM.icon('shield')}Admin</a>`);
+      }
     }).catch(() => {});
   };
   HM.renderFooter = () => {

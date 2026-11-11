@@ -19,6 +19,7 @@ if ($method === 'GET') {
 
 $v = new V(hm_input());
 $name = $v->str('name', 2, 100, false, 'Name');
+$campusId = $v->int('campus_id', 1, 2147483647, false, 'College');
 $branch = $v->str('branch', 0, 100, false, 'Branch');
 $year = $v->int('year', 1, 6, false, 'Year');
 $bio = $v->str('bio', 0, 500, false, 'Bio', true);
@@ -31,6 +32,14 @@ $github = $v->url('github_url', ['github.com'], 'GitHub link');
 $linkedin = $v->url('linkedin_url', ['linkedin.com'], 'LinkedIn link');
 $looking = $v->bool('looking_for_team');
 $v->done();
+
+if ($campusId !== null) {
+    $campusCheck = db()->prepare('SELECT 1 FROM campuses WHERE id = ? AND is_active = 1');
+    $campusCheck->execute([$campusId]);
+    if (!$campusCheck->fetchColumn()) {
+        fail('Please select a valid active college.', 422, 'validation_error', ['campus_id' => 'Select a valid college.']);
+    }
+}
 
 $skillIds = null;
 if ($skills !== null) {
@@ -62,9 +71,13 @@ if ($looking !== null) {
     $profileCols['looking_for_team'] = $looking ? 1 : 0;
 }
 
-hm_tx(function ($pdo) use ($me, $name, $profileCols, $skillIds) {
-    if ($name !== null) {
-        $pdo->prepare('UPDATE users SET name = ? WHERE id = ?')->execute([$name, $me['id']]);
+hm_tx(function ($pdo) use ($me, $name, $campusId, $profileCols, $skillIds) {
+    if ($name !== null || $campusId !== null) {
+        $sets = []; $params = [];
+        if ($name !== null) { $sets[] = 'name = ?'; $params[] = $name; }
+        if ($campusId !== null) { $sets[] = 'campus_id = ?'; $params[] = $campusId; }
+        $params[] = $me['id'];
+        $pdo->prepare('UPDATE users SET ' . implode(', ', $sets) . ' WHERE id = ?')->execute($params);
     }
     if ($profileCols) {
         $cols = array_keys($profileCols);

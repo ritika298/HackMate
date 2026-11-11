@@ -16,16 +16,17 @@ Thumbs.db
 *.bak
 *.swp
 
-# Dependencies
+# Dependencies and generated files
 node_modules/
 vendor/
 __pycache__/
 *.pyc
 
-# Editors
+# Editor settings
 .vscode/
 .idea/
 
-# Private handoff documents
+# Private handoff notes
 docs/HANDOFF_ACCOUNT_1.md
 docs/HANDOFF_ACCOUNT_2.md
+docs/CLAUDE_HANDOFF.md

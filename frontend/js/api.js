@@ -64,8 +64,6 @@ window.HM_CONFIG = {
     /* ----- users / profile ----- */
     getUsers: (filters = {}) => call('/users/discover.php', { query: filters }),    // ?q&campus&skill&role&branch&year
     getProfile: (id) => call('/users/profile.php', { query: id ? { id } : {} }),    // omit id = me
-    getSkills: () => call('/skills/list.php'),
-    
     updateProfile: (payload) => call('/users/profile.php', { method: 'POST', body: payload }),
 
     /* ----- team requests ----- */
@@ -98,6 +96,7 @@ window.HM_CONFIG = {
 
     /* ----- admin (the backend enforces role = admin on every one of these) ----- */
     getAdminOverview: () => call('/admin/overview.php'),
+    getAdminActivity: () => call('/admin/activity.php'),
     getAdminUsers: () => call('/admin/users.php'),
     getAdminProjects: () => call('/admin/projects.php'),
     getAdminHackathons: () => call('/admin/hackathons.php'),

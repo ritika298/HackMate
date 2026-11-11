@@ -179,7 +179,7 @@ print('\n[15] authorization')
 s, j = b.post('/projects/update.php', {'id': pid, 'title': 'Hijacked title'}); check("B cannot edit A's project -> 403", s == 403)
 s, j = b.post('/projects/delete.php', {'id': pid}); check("B cannot delete A's project -> 403", s == 403)
 s, j = a.get('/projects/get.php', id=pid); check('project unchanged', j['data']['title'] == pbody['title'])
-for path in ('/admin/overview.php', '/admin/users.php', '/admin/reports.php', '/admin/projects.php', '/admin/hackathons.php', '/admin/skills.php'):
+for path in ('/admin/overview.php', '/admin/activity.php', '/admin/users.php', '/admin/reports.php', '/admin/projects.php', '/admin/hackathons.php', '/admin/skills.php'):
     s, j = b.get(path); check(f'student blocked from {path} -> 403', s == 403)
 s, j = anon.get('/admin/overview.php'); check('anonymous blocked from admin -> 401', s == 401)
 s, j = b.post('/admin/action.php', {'entity': 'user', 'id': uid_a, 'action': 'suspend'}); check('student cannot run admin actions -> 403', s == 403)
@@ -212,7 +212,7 @@ ae, ap = os.environ.get('ADMIN_EMAIL'), os.environ.get('ADMIN_PASSWORD')
 if ae and ap:
     print('\n[admin] (ADMIN_EMAIL set)')
     adm = Client('admin'); s, j = adm.post('/auth/login.php', {'email': ae, 'password': ap}); check('admin login', s == 200 and j['data']['user']['role'] == 'admin', str(j)[:150])
-    for path in ('/admin/overview.php', '/admin/users.php', '/admin/projects.php', '/admin/hackathons.php', '/admin/reports.php', '/admin/skills.php'):
+    for path in ('/admin/overview.php', '/admin/activity.php', '/admin/users.php', '/admin/projects.php', '/admin/hackathons.php', '/admin/reports.php', '/admin/skills.php'):
         s, j = adm.get(path); check(f'admin can read {path}', s == 200)
     s, j = adm.get('/admin/users.php'); check('admin users list has no password hashes', not has_secret_keys(j))
     s, j = adm.get('/admin/reports.php'); rep = next((r for r in j['data'] if r['status'] == 'open'), None)

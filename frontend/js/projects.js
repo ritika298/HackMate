@@ -2,24 +2,9 @@
 (function (HM) {
   'use strict';
   HM.initPage('projects');
-  const e = HM.esc;
-  const grid = HM.$('#results');
-  const form = HM.$('#filters');
-  let list = [], openRequest;
+  const e = HM.esc; const grid = HM.$('#results'), form = HM.$('#filters'); let list = [], openRequest;
 
-  const pageParams = new URLSearchParams(window.location.search);
-  const myProjectsOnly = pageParams.get('mine') === '1';
-
-  const filters = () => {
-  const f = Object.fromEntries(new FormData(form).entries());
-
-  // Show only projects created or joined by the logged-in user.
-  if (myProjectsOnly) {
-    f.mine = '1';
-  }
-
-  return f;
-};
+  const filters = () => Object.fromEntries(new FormData(form).entries());
   async function load() {
     grid.innerHTML = HM.skeletons(4, 300);
     try {
