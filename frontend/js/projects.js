@@ -542,6 +542,7 @@
             HM.rules.maxLen(2000)
           ],
           category: [HM.rules.required('Please select a project type.')],
+           status: [HM.rules.required('Please select a status.')],
           team_size: [HM.rules.required()]
         });
 
@@ -615,6 +616,7 @@
         HM.rules.maxLen(2000)
       ],
       category: [HM.rules.required('Please select a project type.')],
+       status: [HM.rules.required('Please select a status.')],
       team_size: [HM.rules.required()],
       looking_for: [
         HM.rules.required('List at least one role you need.')
