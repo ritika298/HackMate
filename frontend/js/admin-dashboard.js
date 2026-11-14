@@ -24,15 +24,17 @@
   const REASON = { spam: 'Spam', harassment: 'Harassment', fake_profile: 'Fake profile', inappropriate: 'Inappropriate content', other: 'Other' };
 
   /* Admin section pages (also the sidebar). `route` is the location.hash the section lives at. */
-  const SECTIONS = [
-    { tab: 'overview', route: 'overview', label: 'Overview', icon: 'dashboard', title: 'Overview' },
-    { tab: 'users', route: 'users', label: 'Users', icon: 'users', title: 'Manage users' },
-    { tab: 'projects', route: 'projects', label: 'Projects', icon: 'folder', title: 'Manage projects' },
-    { tab: 'hackathons', route: 'hackathons', label: 'Hackathons', icon: 'trophy', title: 'Manage hackathons' },
-    { tab: 'reports', route: 'reports', label: 'Reports', icon: 'flag', title: 'Review complaints' },
-    { tab: 'skills', route: 'skills', label: 'Skills', icon: 'tag', title: 'Manage skills' },
-    { tab: 'activity', route: 'activity', label: 'Platform activity', icon: 'pulse', title: 'Platform activity' }
-  ];
+  
+  
+const SECTIONS = [
+  { tab: 'overview', route: 'overview', label: 'Overview', icon: 'dashboard', title: 'Overview' },
+  { tab: 'users', route: 'users', label: 'Users', icon: 'users', title: 'Manage users' },
+  { tab: 'projects', route: 'projects', label: 'Projects', icon: 'folder', title: 'Manage projects' },
+  { tab: 'hackathons', route: 'hackathons', label: 'Hackathons', icon: 'trophy', title: 'Manage hackathons' },
+  { tab: 'reports', route: 'reports', label: 'Reports', icon: 'flag', title: 'Review complaints' },
+  { tab: 'activity', route: 'activity', label: 'Platform activity', icon: 'pulse', title: 'Platform activity' }
+];
+
 
   const STATS = [
     { key: 'users', label: 'Total users', icon: 'users', route: 'users' },
@@ -45,14 +47,15 @@
     { key: 'campuses', label: 'Registered campuses', icon: 'pin', route: null, tone: 'teal' }
   ];
 
-  const ACTIONS = [
-    { route: 'users', icon: 'users', label: 'Manage Users', hint: 'Suspend or reactivate accounts' },
-    { route: 'reports', icon: 'flag', label: 'Review Complaints', hint: 'Resolve or dismiss reports' },
-    { route: 'projects', icon: 'folder', label: 'Manage Projects', hint: 'Close, reopen or remove' },
-    { route: 'hackathons', icon: 'trophy', label: 'Manage Hackathons', hint: 'Add, feature or archive' },
-    { route: 'skills', icon: 'tag', label: 'Manage Skills', hint: 'Edit the skills list' },
-    { route: 'activity', icon: 'pulse', label: 'View Platform Activity', hint: 'Latest signups and reports' }
-  ];
+  
+const ACTIONS = [
+  { route: 'users', icon: 'users', label: 'Manage Users', hint: 'Suspend or reactivate accounts' },
+  { route: 'reports', icon: 'flag', label: 'Review Complaints', hint: 'Resolve or dismiss reports' },
+  { route: 'projects', icon: 'folder', label: 'Manage Projects', hint: 'Close, reopen or remove' },
+  { route: 'hackathons', icon: 'trophy', label: 'Manage Hackathons', hint: 'Add, edit, feature or archive' },
+  { route: 'activity', icon: 'pulse', label: 'View Platform Activity', hint: 'Latest signups and reports' }
+];
+
 
   /* ---------- small renderers ---------- */
   const link = (route, inner, cls) => `<a class="${cls}" href="#${route}">${inner}</a>`;

@@ -225,9 +225,15 @@
             </span>
 
             <span>
-              ${HM.icon(h.mode === 'online' ? 'globe' : 'pin')}
-              ${e(h.location || 'Online')}
-            </span>
+  ${HM.icon(h.mode === 'online' ? 'globe' : 'pin')}
+  ${e(
+    h.mode === 'online'
+      ? 'Online'
+      : h.mode === 'offline'
+        ? (h.location || 'Offline')
+        : (h.location || 'Hybrid')
+  )}
+</span>
 
           </div>
 

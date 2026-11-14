@@ -1,4 +1,3 @@
-
 /* HackMate — admin.js
  * Admin UI and interactions.
  * All admin permissions are verified server-side.
@@ -21,13 +20,13 @@
     'users',
     'projects',
     'hackathons',
-    'reports',
-    'skills'
+    'reports'
   ];
 
   let tab = 'overview';
   let shown = null;
   let reqId = 0;
+  let editingHackathonId = null;
 
   /* ==========================================
      TABLE GENERATOR
@@ -96,7 +95,6 @@
 
     /* MANAGE USERS */
     async users() {
-
       const [users, campuses] = await Promise.all([
         HM.api.getAdminUsers(),
         HM.api.getCampuses()
@@ -114,18 +112,14 @@
         users,
         (u) => `
           <tr>
-
             <td>
               <div style="font-weight:600;">
                 ${e(u.name)}
               </div>
             </td>
 
-            <td>
-              ${e(u.email)}
-            </td>
+            <td>${e(u.email)}</td>
 
-            <!-- COLLEGE -->
             <td>
               <form
                 class="admin-campus-form"
@@ -140,7 +134,6 @@
                   padding:0;
                 "
               >
-
                 <select
                   class="select"
                   name="campus_id"
@@ -186,11 +179,9 @@
                 >
                   Save college
                 </button>
-
               </form>
             </td>
 
-            <!-- ROLE -->
             <td style="
               white-space:nowrap;
               font-weight:600;
@@ -199,36 +190,30 @@
               ${e(u.role)}
             </td>
 
-            <!-- STATUS -->
-            <td>
-              ${HM.status(u.status)}
-            </td>
+            <td>${HM.status(u.status)}</td>
 
-            <!-- ACTIONS -->
             <td>
-            ${u.role === 'student'
-  ? (
-      u.status === 'suspended'
-        ? act(
-            'user',
-            u.id,
-            'activate',
-            'Activate',
-            'btn-success'
-          )
-        : act(
-            'user',
-            u.id,
-            'suspend',
-            'Suspend',
-            'btn-danger'
-          )
-    )
-  : ''
-}
-             
+              ${u.role === 'student'
+                ? (
+                    u.status === 'suspended'
+                      ? act(
+                          'user',
+                          u.id,
+                          'activate',
+                          'Activate',
+                          'btn-success'
+                        )
+                      : act(
+                          'user',
+                          u.id,
+                          'suspend',
+                          'Suspend',
+                          'btn-danger'
+                        )
+                  )
+                : ''
+              }
             </td>
-
           </tr>
         `,
         {
@@ -259,7 +244,7 @@
           'Campus',
           'Members',
           'Status',
-          ''
+          'Actions'
         ],
         await HM.api.getAdminProjects(),
         (p) => `
@@ -270,81 +255,29 @@
             <td>${e(p.members)}</td>
             <td>${HM.status(p.status)}</td>
             <td>
-              ${u.role === 'student'
-  ? (
-      u.status === 'suspended'
-        ? act(
-            'user',
-            u.id,
-            'activate',
-            'Activate',
-            'btn-success'
-          )
-        : act(
-            'user',
-            u.id,
-            'suspend',
-            'Suspend',
-            'btn-danger'
-          )
-    )
-  : ''
-}
-            </td>
-          </tr>
-        `
-      );
-    },
-
-    /* MANAGE HACKATHONS */
-    async hackathons() {
-
-      return `
-        <div
-          class="row-between"
-          style="margin-bottom:14px"
-        >
-          <span></span>
-
-          <button
-            class="btn btn-primary btn-sm"
-            data-entity="hackathon"
-            data-action="create"
-          >
-            ${HM.icon('plus')}
-            Add hackathon
-          </button>
-        </div>
-      ` + table(
-        [
-          'Name',
-          'Organizer',
-          'Mode',
-          'Deadline',
-          'Featured',
-          ''
-        ],
-        await HM.api.getAdminHackathons(),
-        (h) => `
-          <tr>
-            <td>${e(h.name)}</td>
-            <td>${e(h.organizer)}</td>
-            <td>${e(h.mode)}</td>
-            <td>${e(HM.fmtDate(h.registration_deadline))}</td>
-            <td>${h.is_featured ? 'Yes' : 'No'}</td>
-            <td>
-              ${act(
-                'hackathon',
-                h.id,
-                'feature',
-                'Toggle featured'
-              )}
+              ${
+                p.status === 'closed'
+                  ? act(
+                      'project',
+                      p.id,
+                      'reopen',
+                      'Reopen',
+                      'btn-success'
+                    )
+                  : act(
+                      'project',
+                      p.id,
+                      'close',
+                      'Close',
+                      'btn-danger'
+                    )
+              }
 
               ${act(
-                'hackathon',
-                h.id,
-                'archive',
-                'Archive',
+                'project',
+                p.id,
+                'delete',
+                'Delete',
                 'btn-danger'
               )}
             </td>
@@ -352,6 +285,75 @@
         `
       );
     },
+
+    /* MANAGE HACKATHONS */
+   async hackathons() {
+  const hackathons = await HM.api.getAdminHackathons();
+
+  return `
+    <div class="row-between" style="margin-bottom:14px">
+      <span></span>
+      <button
+        class="btn btn-primary btn-sm"
+        data-entity="hackathon"
+        data-action="create"
+      >
+        ${HM.icon('plus')}
+        Add hackathon
+      </button>
+    </div>
+  ` + table(
+    [
+      'Name',
+      'Organizer',
+      'Mode',
+      'Deadline',
+      'Featured',
+      'Actions'
+    ],
+    hackathons,
+    (h) => `
+      <tr>
+        <td>${e(h.name)}</td>
+        <td>${e(h.organizer)}</td>
+        <td>${e(h.mode)}</td>
+        <td>${e(HM.fmtDate(h.registration_deadline))}</td>
+        <td>${h.is_featured ? 'Yes' : 'No'}</td>
+        <td style="white-space:nowrap">
+          ${act(
+            'hackathon',
+            h.id,
+            'edit',
+            'Edit'
+          )}
+
+          ${act(
+            'hackathon',
+            h.id,
+            h.is_featured ? 'unfeature' : 'feature',
+            h.is_featured ? 'Unfeature' : 'Feature'
+          )}
+
+          ${act(
+            'hackathon',
+            h.id,
+            h.status === 'archived' ? 'unarchive' : 'archive',
+            h.status === 'archived' ? 'Unarchive' : 'Archive',
+            'btn-danger'
+          )}
+
+          ${act(
+            'hackathon',
+            h.id,
+            'delete',
+            'Delete',
+            'btn-danger'
+          )}
+        </td>
+      </tr>
+    `
+  );
+},
 
     /* MANAGE REPORTS */
     async reports() {
@@ -362,7 +364,7 @@
           'Reason',
           'Reported by',
           'Status',
-          ''
+          'Actions'
         ],
         await HM.api.getAdminReports(),
         (r) => `
@@ -391,40 +393,8 @@
           </tr>
         `
       );
-    },
-
-    /* MANAGE SKILLS */
-    async skills() {
-
-      const s = await HM.api.getAdminSkills();
-
-      return `
-        <form
-          class="row"
-          id="skillForm"
-          style="margin-bottom:16px"
-          novalidate
-        >
-          <input
-            class="input"
-            name="name"
-            placeholder="New skill name"
-            style="max-width:280px"
-            maxlength="60"
-            aria-label="New skill name"
-          >
-
-          <button
-            class="btn btn-primary"
-            type="submit"
-          >
-            Add skill
-          </button>
-        </form>
-
-        ${HM.chips(s.map((x) => x.name))}
-      `;
     }
+
   };
 
   /* ==========================================
@@ -443,17 +413,14 @@
   };
 
   function paintChrome(section) {
-
     const key = section || tab;
 
     HM.$$('#adminNav a').forEach((a) => {
-
       if (a.dataset.tab === key) {
         a.setAttribute('aria-current', 'page');
       } else {
         a.removeAttribute('aria-current');
       }
-
     });
 
     const meta =
@@ -463,7 +430,6 @@
   }
 
   async function show() {
-
     const id = ++reqId;
     shown = tab;
 
@@ -475,24 +441,19 @@
     box.innerHTML = HM.skeletons(1, 200);
 
     try {
-
       const html = await views[tab]();
 
       if (id === reqId) {
         box.innerHTML = html;
       }
-
     } catch (err) {
-
       if (id === reqId) {
         box.innerHTML = HM.errorState(err);
       }
-
     }
   }
 
   async function route() {
-
     const r = parseHash();
 
     tab = r.tab;
@@ -504,7 +465,6 @@
     }
 
     if (r.section) {
-
       const el = HM.$('#' + r.section);
 
       if (el) {
@@ -513,11 +473,8 @@
           block: 'start'
         });
       }
-
     } else if (shown === tab) {
-
       window.scrollTo({ top: 0 });
-
     }
   }
 
@@ -528,288 +485,265 @@
   /* ==========================================
      ADD HACKATHON MODAL
   ========================================== */
+  function openHackathonForm(hackathon = null) {
+  editingHackathonId = hackathon ? Number(hackathon.id) : null;
 
-  function openHackathonForm() {
+  if (!HM.$('#hackModal')) {
+    document.body.insertAdjacentHTML(
+      'beforeend',
+      HM.modalShell(
+        'hackModal',
+        'Manage hackathon',
+        `
+        <form id="hackForm" novalidate>
 
-    if (!HM.$('#hackModal')) {
-
-      document.body.insertAdjacentHTML(
-        'beforeend',
-        HM.modalShell(
-          'hackModal',
-          'Add hackathon',
-          `
-          <form id="hackForm" novalidate>
-
-            <div class="form-grid">
-
-              <div class="field">
-                <label for="hName">Name</label>
-                <input
-                  class="input"
-                  id="hName"
-                  name="name"
-                  maxlength="150"
-                >
-                <div class="field-error"></div>
-              </div>
-
-              <div class="field">
-                <label for="hOrg">Organizer</label>
-                <input
-                  class="input"
-                  id="hOrg"
-                  name="organizer"
-                  maxlength="150"
-                >
-                <div class="field-error"></div>
-              </div>
-
-            </div>
-
+          <div class="form-grid">
             <div class="field">
-              <label for="hDesc">Description</label>
-              <textarea
-                class="textarea"
-                id="hDesc"
-                name="description"
-                maxlength="2000"
-              ></textarea>
+              <label for="hName">Name</label>
+              <input class="input" id="hName" name="name" maxlength="150">
               <div class="field-error"></div>
             </div>
 
-            <div class="form-grid">
-
-              <div class="field">
-                <label for="hStart">Event start</label>
-                <input
-                  class="input"
-                  id="hStart"
-                  name="start_date"
-                  type="date"
-                >
-                <div class="field-error"></div>
-              </div>
-
-              <div class="field">
-                <label for="hEnd">Event end</label>
-                <input
-                  class="input"
-                  id="hEnd"
-                  name="end_date"
-                  type="date"
-                >
-                <div class="field-error"></div>
-              </div>
-
+            <div class="field">
+              <label for="hOrg">Organizer</label>
+              <input class="input" id="hOrg" name="organizer" maxlength="150">
+              <div class="field-error"></div>
             </div>
+          </div>
 
-            <div class="form-grid">
+          <div class="field">
+            <label for="hDesc">Description</label>
+            <textarea class="textarea" id="hDesc" name="description" maxlength="5000"></textarea>
+            <div class="field-error"></div>
+          </div>
 
-              <div class="field">
-                <label for="hDead">
-                  Registration deadline
-                </label>
-                <input
-                  class="input"
-                  id="hDead"
-                  name="registration_deadline"
-                  type="date"
-                >
-                <div class="field-error"></div>
-              </div>
-
-              <div class="field">
-                <label for="hMode">Mode</label>
-                <select
-                  class="select"
-                  id="hMode"
-                  name="mode"
-                >
-                  <option value="online">Online</option>
-                  <option value="offline">Offline</option>
-                  <option value="hybrid">Hybrid</option>
-                </select>
-              </div>
-
-            </div>
-
-            <div class="form-grid">
-
-              <div class="field">
-                <label for="hLoc">Location</label>
-                <input
-                  class="input"
-                  id="hLoc"
-                  name="location"
-                  maxlength="150"
-                  placeholder="City / venue (blank if online)"
-                >
-              </div>
-
-              <div class="field">
-                <label for="hUrl">
-                  Website / registration link
-                </label>
-                <input
-                  class="input"
-                  id="hUrl"
-                  name="registration_url"
-                  placeholder="https://"
-                >
-                <div class="field-error"></div>
-              </div>
-
+          <div class="form-grid">
+            <div class="field">
+              <label for="hStart">Event start</label>
+              <input class="input" id="hStart" name="start_date" type="date">
+              <div class="field-error"></div>
             </div>
 
             <div class="field">
-              <label for="hSkills">
-                Skills (comma separated, must exist in Skills)
-              </label>
+              <label for="hEnd">Event end</label>
+              <input class="input" id="hEnd" name="end_date" type="date">
+              <div class="field-error"></div>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="hDead">Registration deadline</label>
+              <input class="input" id="hDead" name="registration_deadline" type="date">
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field">
+              <label for="hMode">Mode</label>
+              <select class="select" id="hMode" name="mode">
+                <option value="online">Online</option>
+                <option value="offline">Offline</option>
+                <option value="hybrid">Hybrid</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="hLoc">Location</label>
               <input
                 class="input"
-                id="hSkills"
-                name="skills"
-                placeholder="Python, React"
+                id="hLoc"
+                name="location"
+                maxlength="150"
+                placeholder="City / venue"
+              >
+            </div>
+
+            <div class="field">
+              <label for="hUrl">Website / registration link</label>
+              <input
+                class="input"
+                id="hUrl"
+                name="registration_url"
+                placeholder="https://"
               >
               <div class="field-error"></div>
             </div>
+          </div>
 
-            <div class="modal-foot">
+          <div class="field">
+            <label for="hSkills">Skills (comma separated)</label>
+            <input
+              class="input"
+              id="hSkills"
+              name="skills"
+              placeholder="Python, React"
+            >
+            <div class="field-error"></div>
+          </div>
 
-              <button
-                type="button"
-                class="btn btn-ghost"
-                data-close
-              >
-                Cancel
-              </button>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close>
+              Cancel
+            </button>
 
-              <button
-                class="btn btn-primary"
-                type="submit"
-              >
-                Add hackathon
-              </button>
+            <button class="btn btn-primary" type="submit" id="hackSubmit">
+              Save hackathon
+            </button>
+          </div>
 
-            </div>
+        </form>
+        `,
+        true
+      )
+    );
 
-          </form>
-          `,
-          true
-        )
-      );
+    HM.$('#hackForm').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
 
-      HM.$('#hackForm').addEventListener(
-        'submit',
-        async (ev) => {
+      const f = ev.target;
 
-          ev.preventDefault();
+      const v = HM.validate(f, {
+        name: [
+          HM.rules.required('Enter a name.'),
+          HM.rules.minLen(3),
+          HM.rules.maxLen(150)
+        ],
 
-          const f = ev.target;
+        organizer: [
+          HM.rules.required('Enter the organizer.')
+        ],
 
-          const v = HM.validate(f, {
+        start_date: [
+          HM.rules.required('Pick a start date.')
+        ],
 
-            name: [
-              HM.rules.required('Enter a name.'),
-              HM.rules.minLen(3),
-              HM.rules.maxLen(150)
-            ],
+        end_date: [
+          HM.rules.required('Pick an end date.'),
+          (x) => (
+            !f.elements.start_date.value ||
+            x >= f.elements.start_date.value
+              ? ''
+              : 'End date must be on or after the start.'
+          )
+        ],
 
-            organizer: [
-              HM.rules.required('Enter the organizer.')
-            ],
+        registration_deadline: [
+          HM.rules.required('Pick a deadline.'),
+          (x) => (
+            !f.elements.end_date.value ||
+            x <= f.elements.end_date.value
+              ? ''
+              : 'Deadline must be on or before the event end.'
+          )
+        ],
 
-            start_date: [
-              HM.rules.required('Pick a start date.')
-            ],
+        registration_url: [
+          HM.rules.url()
+        ]
+      });
 
-            end_date: [
-              HM.rules.required('Pick an end date.'),
-              (x) => (
-                !f.start_date.value ||
-                x >= f.start_date.value
-                  ? ''
-                  : 'End date must be on or after the start.'
-              )
-            ],
+      if (!v) return;
 
-            registration_deadline: [
-              HM.rules.required('Pick a deadline.'),
-              (x) => (
-                !f.end_date.value ||
-                x <= f.end_date.value
-                  ? ''
-                  : 'Deadline must be on or before the event end.'
-              )
-            ],
+      // Read every value directly from the form.
+      // In particular, mode must not be read from v.mode.
+      const payload = {
+        name: f.elements.name.value.trim(),
+        organizer: f.elements.organizer.value.trim(),
+        description: f.elements.description.value,
+        mode: f.elements.mode.value,
+        location: f.elements.location.value.trim(),
+        start_date: f.elements.start_date.value,
+        end_date: f.elements.end_date.value,
+        registration_deadline: f.elements.registration_deadline.value,
+        registration_url: f.elements.registration_url.value.trim(),
+        skills: HM.csv(f.elements.skills.value)
+      };
 
-            registration_url: [
-              HM.rules.url()
-            ]
+      if (!['online', 'offline', 'hybrid'].includes(payload.mode)) {
+        HM.toast('Please select a valid hackathon mode.', 'error');
+        return;
+      }
 
+      const btn = HM.$('#hackSubmit');
+
+      HM.setLoading(btn, true);
+
+      try {
+        if (editingHackathonId) {
+          await HM.api.updateHackathon({
+            id: editingHackathonId,
+            ...payload
           });
 
-          if (!v) return;
-
-          const payload = {
-
-            name: v.name,
-            organizer: v.organizer,
-            description: v.description,
-            mode: v.mode,
-            location: v.location,
-
-            start_date: v.start_date,
-            end_date: v.end_date,
-
-            registration_deadline: v.registration_deadline,
-            registration_url: v.registration_url,
-
-            skills: HM.csv(v.skills),
+          HM.toast('Hackathon updated successfully.', 'success');
+        } else {
+          await HM.api.createHackathon({
+            ...payload,
             status: 'published'
+          });
 
-          };
-
-          const btn = HM.$('button[type=submit]', f);
-
-          HM.setLoading(btn, true);
-
-          try {
-
-            await HM.api.createHackathon(payload);
-
-            HM.closeModal('hackModal');
-
-            f.reset();
-
-            HM.toast('Hackathon added', 'success');
-
-            show();
-
-          } catch (err) {
-
-            HM.toastError(err);
-
-          } finally {
-
-            HM.setLoading(btn, false);
-
-          }
-
+          HM.toast('Hackathon added successfully.', 'success');
         }
-      );
-    }
 
-    HM.openModal('hackModal');
+        HM.closeModal('hackModal');
+        f.reset();
+        editingHackathonId = null;
+
+        shown = null;
+        await show();
+
+      } catch (err) {
+        HM.toastError(err);
+      } finally {
+        HM.setLoading(btn, false);
+      }
+    });
   }
+
+  const f = HM.$('#hackForm');
+
+  if (!f) {
+    HM.toast('Could not open the hackathon form.', 'error');
+    return;
+  }
+
+  f.reset();
+
+  if (hackathon) {
+    f.elements.name.value = hackathon.name || '';
+    f.elements.organizer.value = hackathon.organizer || '';
+    f.elements.description.value = hackathon.description || '';
+    f.elements.start_date.value = hackathon.start_date || '';
+    f.elements.end_date.value = hackathon.end_date || '';
+    f.elements.registration_deadline.value =
+      hackathon.registration_deadline || '';
+
+    f.elements.mode.value =
+      ['online', 'offline', 'hybrid'].includes(hackathon.mode)
+        ? hackathon.mode
+        : 'online';
+
+    f.elements.location.value = hackathon.location || '';
+    f.elements.registration_url.value = hackathon.registration_url || '';
+    f.elements.skills.value = (hackathon.skills || []).join(', ');
+  }
+
+  const submit = HM.$('#hackSubmit');
+
+  if (submit) {
+    submit.textContent = hackathon ? 'Update hackathon' : 'Add hackathon';
+  }
+
+  HM.openModal('hackModal');
+}
 
   /* ==========================================
      ADMIN BUTTON ACTIONS
   ========================================== */
 
   document.addEventListener('click', async (ev) => {
-
     if (ev.target.id === 'retryBtn') {
       return shell.hidden ? init() : show();
     }
@@ -825,7 +759,6 @@
       nav &&
       nav.getAttribute('href') === location.hash
     ) {
-
       ev.preventDefault();
 
       shown = nav.dataset.tab === 'activity'
@@ -838,58 +771,116 @@
     const b = ev.target.closest('[data-entity]');
 
     if (!b) return;
-    if (b.dataset.action === 'create') {
+
+   /* CREATE HACKATHON */
+if (
+  b.dataset.entity === 'hackathon' &&
+  b.dataset.action === 'create'
+) {
   return openHackathonForm();
 }
 
-// Confirm before permanently deleting a project
+/* EDIT HACKATHON */
 if (
-  b.dataset.entity === 'project' &&
+  b.dataset.entity === 'hackathon' &&
+  b.dataset.action === 'edit'
+) {
+  HM.setLoading(b, true);
+
+  try {
+    const hackathons = await HM.api.getAdminHackathons();
+
+    const hackathon = hackathons.find(
+      (h) => Number(h.id) === Number(b.dataset.id)
+    );
+
+    if (!hackathon) {
+      throw new Error('Hackathon not found.');
+    }
+
+    openHackathonForm(hackathon);
+  } catch (err) {
+    HM.toastError(err);
+  } finally {
+    HM.setLoading(b, false);
+  }
+
+  return;
+}
+
+/* DELETE HACKATHON */
+if (
+  b.dataset.entity === 'hackathon' &&
   b.dataset.action === 'delete'
 ) {
-  const row = b.closest('tr');
+  const name =
+    b.closest('tr')?.querySelector('td')?.textContent?.trim()
+    || 'this hackathon';
 
-  const title =
-    row?.querySelector('td')?.textContent?.trim()
-    || 'this project';
-
-  if (
-    !window.confirm(
-      `Are you sure you want to permanently delete "${title}"?`
-    )
-  ) {
+  if (!window.confirm(
+    `Permanently delete "${name}"? This action cannot be undone.`
+  )) {
     return;
   }
 }
 
-HM.setLoading(b, true);
+    /* CONFIRM PROJECT DELETION */
+    if (
+      b.dataset.entity === 'project' &&
+      b.dataset.action === 'delete'
+    ) {
+      const row = b.closest('tr');
 
-   
+      const title =
+        row?.querySelector('td')?.textContent?.trim()
+        || 'this project';
+
+      if (
+        !window.confirm(
+          `Are you sure you want to permanently delete "${title}"?`
+        )
+      ) {
+        return;
+      }
+    }
+
+    /* CONFIRM HACKATHON ARCHIVING */
+    if (
+      b.dataset.entity === 'hackathon' &&
+      b.dataset.action === 'archive'
+    ) {
+      const row = b.closest('tr');
+
+      const name =
+        row?.querySelector('td')?.textContent?.trim()
+        || 'this hackathon';
+
+      if (
+        !window.confirm(
+          `Are you sure you want to archive "${name}"?`
+        )
+      ) {
+        return;
+      }
+    }
+
+    HM.setLoading(b, true);
 
     try {
-
       const res = await HM.api.adminAction({
-
         entity: b.dataset.entity,
         id: Number(b.dataset.id),
         action: b.dataset.action
-
       });
 
       HM.toastResult(res, 'Action completed');
 
       show();
-
     } catch (err) {
-
       HM.toastError(err);
-
     } finally {
-
       HM.setLoading(b, false);
-
     }
-
   });
 
   /* ==========================================
@@ -897,84 +888,34 @@ HM.setLoading(b, true);
   ========================================== */
 
   document.addEventListener('submit', async (ev) => {
-
     /* UPDATE USER COLLEGE */
     if (ev.target.matches('.admin-campus-form')) {
-
       ev.preventDefault();
 
       const f = ev.target;
-
       const btn = HM.$('button[type=submit]', f);
 
       HM.setLoading(btn, true);
 
       try {
-
         const res = await HM.api.adminAction({
-
           entity: 'user',
           id: Number(f.dataset.userId),
           action: 'set_campus',
           campus_id: Number(f.elements.campus_id.value)
-
         });
 
         HM.toastResult(res, 'College updated');
 
         show();
-
       } catch (err) {
-
         HM.toastError(err);
-
       } finally {
-
         HM.setLoading(btn, false);
-
       }
 
       return;
     }
-
-    /* ADD SKILL */
-    if (ev.target.id !== 'skillForm') return;
-
-    ev.preventDefault();
-
-    const v = HM.validate(ev.target, {
-
-      name: [
-        HM.rules.required('Enter a skill name.'),
-        HM.rules.maxLen(60)
-      ]
-
-    });
-
-    if (!v) return;
-
-    try {
-
-      const res = await HM.api.adminAction({
-
-        entity: 'skill',
-        action: 'create',
-        name: v.name
-
-      });
-
-      HM.toastResult(res, 'Skill added');
-
-      ev.target.reset();
-
-      show();
-
-    } catch (err) {
-
-      HM.toastError(err);
-
-    }
-
   });
 
   /* ==========================================
@@ -982,19 +923,14 @@ HM.setLoading(b, true);
   ========================================== */
 
   async function init() {
-
     gate.textContent = 'Checking access…';
 
     let me;
 
     try {
-
       me = await HM.api.getCurrentUser();
-
     } catch (err) {
-
       gate.innerHTML = HM.errorState(err);
-
       return;
     }
 
@@ -1022,7 +958,6 @@ HM.setLoading(b, true);
         data-tab="${x.tab}"
       >
         ${D.icon(x.icon)}
-
         <span>${e(x.label)}</span>
 
         ${x.tab === 'reports'

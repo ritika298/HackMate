@@ -81,11 +81,36 @@ window.HM_CONFIG = {
     leaveProject: (id) => call('/projects/leave.php', { method: 'POST', body: { id } }),
 
     /* ----- hackathons ----- */
-    getHackathons: (filters = {}) => call('/hackathons/list.php', { query: filters }),
-    getHackathon: (id) => call('/hackathons/get.php', { query: { id } }),
-    createHackathon: (payload) => call('/hackathons/create.php', { method: 'POST', body: payload }),   // admin only
-    saveHackathon: (id) => call('/hackathons/save.php', { method: 'POST', body: { id, saved: true } }),
-    unsaveHackathon: (id) => call('/hackathons/save.php', { method: 'POST', body: { id, saved: false } }),
+    /* ----- hackathons ----- */
+getHackathons: (filters = {}) =>
+  call('/hackathons/list.php', { query: filters }),
+
+getHackathon: (id) =>
+  call('/hackathons/get.php', { query: { id } }),
+
+createHackathon: (payload) =>
+  call('/hackathons/create.php', {
+    method: 'POST',
+    body: payload
+  }),
+
+updateHackathon: (payload) =>
+  call('/hackathons/update.php', {
+    method: 'POST',
+    body: payload
+  }),
+
+saveHackathon: (id) =>
+  call('/hackathons/save.php', {
+    method: 'POST',
+    body: { id, saved: true }
+  }),
+
+unsaveHackathon: (id) =>
+  call('/hackathons/save.php', {
+    method: 'POST',
+    body: { id, saved: false }
+  }),
 
     /* ----- team / dashboard / notifications / reports ----- */
     getTeam: () => call('/teams/get.php'),                                          // → {teams:[{project, members:[]}]}
@@ -101,7 +126,7 @@ window.HM_CONFIG = {
     getAdminProjects: () => call('/admin/projects.php'),
     getAdminHackathons: () => call('/admin/hackathons.php'),
     getAdminReports: () => call('/admin/reports.php'),
-    getAdminSkills: () => call('/admin/skills.php'),
+    
     adminAction: (payload) => call('/admin/action.php', { method: 'POST', body: payload })      // {entity,id,action}
   };
 })(window.HM);
