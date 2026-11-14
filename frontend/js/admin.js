@@ -206,16 +206,27 @@
 
             <!-- ACTIONS -->
             <td>
-              ${u.role === 'student' && u.status !== 'suspended'
-                ? act(
-                    'user',
-                    u.id,
-                    'suspend',
-                    'Suspend',
-                    'btn-danger'
-                  )
-                : ''
-              }
+            ${u.role === 'student'
+  ? (
+      u.status === 'suspended'
+        ? act(
+            'user',
+            u.id,
+            'activate',
+            'Activate',
+            'btn-success'
+          )
+        : act(
+            'user',
+            u.id,
+            'suspend',
+            'Suspend',
+            'btn-danger'
+          )
+    )
+  : ''
+}
+             
             </td>
 
           </tr>
@@ -259,13 +270,26 @@
             <td>${e(p.members)}</td>
             <td>${HM.status(p.status)}</td>
             <td>
-              ${act(
-                'project',
-                p.id,
-                'close',
-                'Close',
-                'btn-danger'
-              )}
+              ${u.role === 'student'
+  ? (
+      u.status === 'suspended'
+        ? act(
+            'user',
+            u.id,
+            'activate',
+            'Activate',
+            'btn-success'
+          )
+        : act(
+            'user',
+            u.id,
+            'suspend',
+            'Suspend',
+            'btn-danger'
+          )
+    )
+  : ''
+}
             </td>
           </tr>
         `
@@ -814,12 +838,33 @@
     const b = ev.target.closest('[data-entity]');
 
     if (!b) return;
-
     if (b.dataset.action === 'create') {
-      return openHackathonForm();
-    }
+  return openHackathonForm();
+}
 
-    HM.setLoading(b, true);
+// Confirm before permanently deleting a project
+if (
+  b.dataset.entity === 'project' &&
+  b.dataset.action === 'delete'
+) {
+  const row = b.closest('tr');
+
+  const title =
+    row?.querySelector('td')?.textContent?.trim()
+    || 'this project';
+
+  if (
+    !window.confirm(
+      `Are you sure you want to permanently delete "${title}"?`
+    )
+  ) {
+    return;
+  }
+}
+
+HM.setLoading(b, true);
+
+   
 
     try {
 

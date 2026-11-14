@@ -40,7 +40,14 @@ ok([
     'user'                   => $user,
     'profile_completion'     => hm_profile_completion($user),
     'pending_requests'       => $one("SELECT COUNT(*) FROM team_requests WHERE receiver_id = ? AND status = 'pending'", [$me['id']]),
-    'projects_count'         => $one('SELECT COUNT(*) FROM project_members WHERE user_id = ?', [$me['id']]),
+    'projects_count' => $one(
+    'SELECT COUNT(DISTINCT pr.id)
+     FROM projects pr
+     INNER JOIN project_members pm
+        ON pm.project_id = pr.id
+     WHERE pm.user_id = ?',
+    [$me['id']]
+),
     'saved_hackathons_count' => $one('SELECT COUNT(*) FROM saved_hackathons WHERE user_id = ?', [$me['id']]),
     'team_members_count'     => $one('SELECT COUNT(DISTINCT pm2.user_id) FROM project_members pm JOIN project_members pm2 ON pm2.project_id = pm.project_id AND pm2.user_id <> pm.user_id WHERE pm.user_id = ?', [$me['id']]),
     'recommended_users'      => $recommended,

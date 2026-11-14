@@ -31,3 +31,10 @@ docs/HANDOFF_ACCOUNT_1.md
 docs/HANDOFF_ACCOUNT_2.md
 docs/CLAUDE_HANDOFF.md
 backend/config/config.production.php
+
+
+# Backup archives
+*.zip
+
+# R history
+.Rhistory

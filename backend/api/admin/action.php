@@ -57,20 +57,106 @@ switch ($entity) {
         $msg = $action === 'suspend' ? 'User suspended.' : 'User reactivated.';
         break;
 
-    case 'project':
-        $needId();
-        if ($action === 'delete') {
-            $st = $pdo->prepare('DELETE FROM projects WHERE id = ?');
-        } elseif (in_array($action, ['close', 'reopen'], true)) {
-            $st = $pdo->prepare('UPDATE projects SET status = ? WHERE id = ?');
-        } else { $bad(); }
-        $action === 'delete' ? $st->execute([$id]) : $st->execute([$action === 'close' ? 'closed' : 'open', $id]);
-        if ($st->rowCount() === 0) {
-            $chk = $pdo->prepare('SELECT 1 FROM projects WHERE id = ?'); $chk->execute([$id]);
-            if (!$chk->fetch()) { fail('Project not found.', 404, 'not_found'); }
+     case 'project':
+    $needId();
+
+    if ($action === 'delete') {
+
+        $pdo->beginTransaction();
+
+        try {
+
+            // Remove project memberships
+            $pdo->prepare(
+                'DELETE FROM project_members WHERE project_id = ?'
+            )->execute([$id]);
+
+            // Remove project skills
+            $pdo->prepare(
+                'DELETE FROM project_skills WHERE project_id = ?'
+            )->execute([$id]);
+
+            // Remove related team requests
+            $pdo->prepare(
+                'DELETE FROM team_requests WHERE project_id = ?'
+            )->execute([$id]);
+
+            // Finally delete the project
+            $st = $pdo->prepare(
+                'DELETE FROM projects WHERE id = ?'
+            );
+
+            $st->execute([$id]);
+
+            if ($st->rowCount() === 0) {
+                $pdo->rollBack();
+
+                fail(
+                    'Project not found.',
+                    404,
+                    'not_found'
+                );
+            }
+
+            $pdo->commit();
+
+            $msg = 'Project deleted.';
+
+            break;
+
+        } catch (Throwable $e) {
+
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+
+            throw $e;
         }
-        $msg = ['close' => 'Project closed.', 'reopen' => 'Project reopened.', 'delete' => 'Project deleted.'][$action];
-        break;
+
+    } elseif (in_array($action, ['close', 'reopen'], true)) {
+
+        $st = $pdo->prepare(
+            'UPDATE projects SET status = ? WHERE id = ?'
+        );
+
+    } else {
+
+        $bad();
+
+    }
+
+    if ($action !== 'delete') {
+
+        $st->execute([
+            $action === 'close' ? 'closed' : 'open',
+            $id
+        ]);
+
+        if ($st->rowCount() === 0) {
+
+            $chk = $pdo->prepare(
+                'SELECT 1 FROM projects WHERE id = ?'
+            );
+
+            $chk->execute([$id]);
+
+            if (!$chk->fetch()) {
+                fail(
+                    'Project not found.',
+                    404,
+                    'not_found'
+                );
+            }
+        }
+
+        $msg = $action === 'close'
+            ? 'Project closed.'
+            : 'Project reopened.';
+    }
+
+    break;   
+
+    
 
     case 'hackathon':
         if ($action === 'create') {
