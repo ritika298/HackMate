@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Me · HackMate</title>
+  <meta name="description" content="Hey, I'm Ritika, a B.Tech student, web developer and the creator of HackMate.">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235A3DF5'/%3E%3Ccircle cx='10' cy='10' r='3' fill='white'/%3E%3Ccircle cx='22' cy='12' r='3' fill='white'/%3E%3Ccircle cx='14' cy='23' r='3' fill='white'/%3E%3C/svg%3E">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/about-me.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+
+<body data-root="../" data-page="about-me">
+
+<div id="app-nav"></div>
+
+<main id="top">
+
+  <!-- 1. ABOUT ME -->
+  <section class="me-hero" aria-labelledby="meTitle">
+    <div class="container me-hero-grid">
+
+      <div class="me-intro reveal">
+        <span class="chip me-eyebrow">IGDTUW · B.Tech · 2nd Year</span>
+
+        <h1 id="meTitle">Hey, I'm Ritika.</h1>
+
+        <p class="me-sub">B.Tech Student | Web Developer | Creator of HackMate</p>
+
+        <p class="me-lead">
+          I'm passionate about technology, learning new things and building
+          projects that solve real-world problems. I enjoy turning ideas into
+          functional digital experiences and continuously improving my skills
+          through hands-on projects.
+        </p>
+
+        <div class="me-actions">
+          <a class="btn btn-primary btn-lg"
+             href="https://www.linkedin.com/in/ritika-yadav-211150325/"
+             target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+
+          <a class="btn btn-ghost btn-lg"
+             href="mailto:ritika102btit25@igdtuw.ac.in">
+            Email Me
+          </a>
+
+          <a class="btn btn-ghost btn-lg me-scroll"
+             href="#built" aria-label="Scroll to the next section">
+            Scroll ↓
+          </a>
+        </div>
+      </div>
+
+      <figure class="me-photo-wrap reveal">
+        <div class="me-photo" id="mePhotoBox">
+          <img id="mePhoto"
+               src="../assets/images/ritika.jpg"
+               alt="Portrait of Ritika, creator of HackMate"
+               width="420" height="420">
+
+          <div class="me-photo-fallback" id="mePhotoFallback" hidden>
+            <span aria-hidden="true">R</span>
+            <small>Add your photo as<br>assets/images/ritika.jpg</small>
+          </div>
+        </div>
+
+        <figcaption>
+          <b>Ritika</b>
+          <span>Student &amp; Web Developer</span>
+        </figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <div class="container">
+
+    <!-- 2. WHAT I BUILT -->
+    <section class="me-section" id="built" aria-labelledby="builtTitle">
+
+      <div class="me-head reveal">
+        <h2 id="builtTitle">A Little About What I Built</h2>
+
+        <h3 class="me-subhead">What is HackMate?</h3>
+
+        <p class="muted">
+          HackMate is a student-focused collaboration platform that brings
+          people, skills and opportunities together. It helps students find
+          teammates, discover hackathons, explore projects and turn their
+          ideas into something real.
+        </p>
+      </div>
+
+      <div class="me-cards">
+
+        <article class="card hoverable me-card reveal">
+          <span class="me-icon">👥</span>
+          <h3>Find teammates</h3>
+          <p class="muted">Meet students with complementary skills who can fill the gaps in your team.</p>
+        </article>
+
+        <article class="card hoverable me-card reveal">
+          <span class="me-icon sun">📅</span>
+          <h3>Discover hackathons</h3>
+          <p class="muted">Browse hackathons and competitions, save opportunities and register.</p>
+        </article>
+
+        <article class="card hoverable me-card reveal">
+          <span class="me-icon teal">📁</span>
+          <h3>Find student projects</h3>
+          <p class="muted">Explore interesting projects and see where you could contribute.</p>
+        </article>
+
+        <article class="card hoverable me-card reveal">
+          <span class="me-icon rose">✈</span>
+          <h3>Connect with students</h3>
+          <p class="muted">Send team requests and connect with people who share your interests.</p>
+        </article>
+
+        <article class="card hoverable me-card reveal">
+          <span class="me-icon">🔗</span>
+          <h3>Build teams</h3>
+          <p class="muted">Form teams, collaborate on ideas and turn them into real projects.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 3. MY STORY -->
+    <section class="me-section" aria-labelledby="storyTitle">
+      <div class="card me-story reveal">
+
+        <h2 id="storyTitle">A Little About Me</h2>
+
+        <p>
+          I'm a B.Tech student at Indira Gandhi Delhi Technical University
+          for Women (IGDTUW), currently in my second year. Web development
+          is something I'm exploring one project at a time, and I've found
+          that I learn best by actually building things instead of only reading about them.
+        </p>
+
+        <p>
+          I like starting with an idea, figuring out how to make it work,
+          getting stuck, fixing it and trying again. Every project teaches
+          me something new, and that's what keeps me curious.
+        </p>
+
+        <p>
+          I'm interested in creating useful digital products, things that
+          make someone's day a little easier. I'm still learning, still
+          experimenting, and enjoying the process.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- 4. WHY I BUILT HACKMATE -->
+    <section class="me-section" aria-labelledby="ideaTitle">
+      <div class="me-idea reveal">
+
+        <div>
+          <h2 id="ideaTitle">The Idea Behind HackMate</h2>
+
+          <blockquote class="me-quote">
+            I wanted to create a platform where students can find teammates,
+            discover hackathons and turn their ideas into real projects.
+          </blockquote>
+        </div>
+
+        <div class="me-idea-text">
+          <p>
+            As a student, I saw how a good idea can stay just an idea when
+            you don't know who to build it with, or where to take it next.
+            Finding people with the right skills, and finding the right
+            opportunities, shouldn't be that hard.
+          </p>
+
+          <p>
+            So I built HackMate to bring those pieces together: students,
+            skills, projects and opportunities, all in one place.
+          </p>
+
+          <div class="chips">
+            <span class="chip">Students</span>
+            <span class="chip teal">Skills</span>
+            <span class="chip sun">Projects</span>
+            <span class="chip">Opportunities</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. SKILLS -->
+    <section class="me-section" aria-labelledby="skillsTitle">
+
+      <div class="me-head reveal">
+        <h2 id="skillsTitle">What I Work With</h2>
+        <p class="muted">The technologies I used to build HackMate.</p>
+      </div>
+
+      <ul class="me-tech" role="list">
+        <li class="card hoverable reveal"><span class="tech-tile t-html">HTML</span><b>HTML</b></li>
+        <li class="card hoverable reveal"><span class="tech-tile t-css">CSS</span><b>CSS</b></li>
+        <li class="card hoverable reveal"><span class="tech-tile t-js">JS</span><b>JavaScript</b></li>
+        <li class="card hoverable reveal"><span class="tech-tile t-php">PHP</span><b>PHP</b></li>
+        <li class="card hoverable reveal"><span class="tech-tile t-sql">SQL</span><b>MySQL</b></li>
+      </ul>
+
+    </section>
+
+    <!-- 6. CONNECT -->
+    <section class="me-connect reveal" aria-labelledby="connectTitle">
+
+      <h2 id="connectTitle">Let's Connect!</h2>
+
+      <p>
+        I'm always happy to connect with people who love technology,
+        creativity and building meaningful things.
+      </p>
+
+      <div class="me-connect-grid">
+
+        <div class="me-connect-card">
+          <span class="me-icon">in</span>
+          <h3>LinkedIn</h3>
+          <a class="btn btn-primary"
+             href="https://www.linkedin.com/in/ritika-yadav-211150325/"
+             target="_blank" rel="noopener noreferrer">
+            Connect on LinkedIn
+          </a>
+        </div>
+
+        <div class="me-connect-card">
+          <span class="me-icon teal">✉</span>
+          <h3>Email</h3>
+          <a class="btn btn-ghost"
+             href="mailto:ritika102btit25@igdtuw.ac.in">
+            Send Me an Email
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<div id="app-footer"></div>
+<div class="toast-stack" id="toasts" aria-live="polite"></div>
+
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/components.js"></script>
+<script src="../js/about-me.js"></script>
+
+</body>
+</html>
